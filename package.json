@@ -1,0 +1,30 @@
+{
+  "name": "boks",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Bookstore platform — physical & digital books (mobile, admin, API)",
+  "packageManager": "pnpm@11.5.0",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:api": "turbo run dev --filter=@boks/api",
+    "dev:admin": "turbo run dev --filter=@boks/admin",
+    "dev:mobile": "turbo run dev --filter=@boks/mobile",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "db:generate": "pnpm --filter @boks/api prisma:generate",
+    "db:migrate": "pnpm --filter @boks/api prisma:migrate",
+    "db:seed": "pnpm --filter @boks/api prisma:seed",
+    "db:studio": "pnpm --filter @boks/api prisma:studio",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
