@@ -2,55 +2,70 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { BookListItemDto } from '@boks/shared-types';
 import { theme } from '@/lib/theme';
+import { BookCover } from '@/components/BookCover';
 
 export function BookCard({
   book,
   rank,
+  width = 128,
 }: {
   book: BookListItemDto;
   rank?: number;
+  width?: number;
 }) {
   return (
     <Pressable
-      style={styles.card}
+      style={[styles.card, { width }]}
       onPress={() => router.push(`/book/${book.slug}`)}
     >
-      <View style={styles.cover}>
-        {rank ? <Text style={styles.rank}>{rank}</Text> : null}
-        <Text style={styles.coverLetter}>{book.title.charAt(0)}</Text>
+      <View>
+        <BookCover seed={book.slug} style={{ width: '100%', height: width * 1.35 }} />
+        {rank ? (
+          <View style={styles.rankBadge}>
+            <Text style={styles.rankText}>{rank}</Text>
+          </View>
+        ) : null}
       </View>
-      <Text numberOfLines={2} style={styles.title}>
+      <Text numberOfLines={1} style={styles.title}>
         {book.title}
       </Text>
-      <Text style={styles.rating}>★ {book.averageRating.toFixed(1)}</Text>
-      <Text style={styles.price}>
-        from ${book.lowestPrice?.toFixed(2) ?? '—'}
-      </Text>
+      <View style={styles.metaRow}>
+        <Text style={styles.rating}>★ {book.averageRating.toFixed(1)}</Text>
+        {book.lowestPrice != null && (
+          <Text style={styles.price}>${book.lowestPrice.toFixed(2)}</Text>
+        )}
+      </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { width: 130 },
-  cover: {
-    height: 170,
-    borderRadius: theme.radii.md,
-    backgroundColor: theme.colors.primaryMuted,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-    overflow: 'hidden',
-  },
-  rank: {
+  card: {},
+  rankBadge: {
     position: 'absolute',
     top: 8,
     left: 8,
-    color: '#fff',
-    fontWeight: '800',
-    fontSize: 18,
+    minWidth: 24,
+    height: 24,
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  coverLetter: { color: '#fff', fontSize: 42, fontWeight: '700' },
-  title: { fontWeight: '600', color: theme.colors.text, minHeight: 36 },
-  rating: { color: theme.colors.star, marginTop: 2, fontSize: 12 },
-  price: { color: theme.colors.textSecondary, fontSize: 12, marginTop: 2 },
+  rankText: { fontWeight: '800', fontSize: 13, color: theme.colors.text },
+  title: {
+    marginTop: 8,
+    fontWeight: '600',
+    fontSize: 13,
+    color: theme.colors.text,
+  },
+  metaRow: {
+    marginTop: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  rating: { color: theme.colors.textSecondary, fontSize: 12 },
+  price: { color: theme.colors.text, fontSize: 12, fontWeight: '600' },
 });

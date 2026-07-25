@@ -43,7 +43,7 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     name: "Commerce",
     subItems: [
-      { name: "Orders", path: "/coming-soon", soon: true },
+      { name: "Orders", path: "/commerce/orders", pro: false },
       { name: "Customers", path: "/coming-soon", soon: true },
       { name: "Coupons", path: "/coming-soon", soon: true },
     ],

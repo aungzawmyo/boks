@@ -2,6 +2,23 @@
 
 Modern bookstore platform for selling **physical** and **digital** books.
 
+## Documentation
+
+Full docs live in **[`docs/`](./docs/README.md)**:
+
+| Doc | Description |
+|-----|-------------|
+| [Overview](./docs/overview.md) | Product vision and scope |
+| [Features](./docs/features.md) | Feature matrix by phase |
+| [Architecture](./docs/architecture.md) | System design |
+| [Database](./docs/database.md) | Prisma models |
+| [API reference](./docs/api.md) | HTTP endpoints |
+| [Development](./docs/development.md) | Local setup |
+| [Deployment](./docs/deployment.md) | Environments & production |
+| [Implementation phases](./docs/phases.md) | Roadmap Phases 1–6 |
+| [Security](./docs/security.md) | Auth & digital file policy |
+| [Monorepo](./docs/monorepo.md) | Workspace conventions |
+
 | App | Stack | Path |
 |-----|--------|------|
 | Mobile | React Native (Expo) | `apps/mobile` |

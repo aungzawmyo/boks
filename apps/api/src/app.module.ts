@@ -10,6 +10,9 @@ import { PublishersModule } from './publishers/publishers.module';
 import { StorageModule } from './storage/storage.module';
 import { HealthController } from './health.controller';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CartModule } from './cart/cart.module';
+import { AddressesModule } from './addresses/addresses.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
     PublishersModule,
     StorageModule,
     DashboardModule,
+    CartModule,
+    AddressesModule,
+    OrdersModule,
   ],
   controllers: [HealthController],
 })

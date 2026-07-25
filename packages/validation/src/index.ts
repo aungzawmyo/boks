@@ -90,8 +90,70 @@ export const createPublisherSchema = z.object({
 
 export const updatePublisherSchema = createPublisherSchema.partial();
 
+export const addressInputSchema = z.object({
+  fullName: z.string().min(1).max(200),
+  line1: z.string().min(1).max(300),
+  line2: z.string().max(300).optional().nullable(),
+  city: z.string().min(1).max(120),
+  state: z.string().max(120).optional().nullable(),
+  postalCode: z.string().min(1).max(30),
+  country: z.string().min(2).max(2).default('US'),
+  phone: z.string().max(40).optional().nullable(),
+  isDefault: z.boolean().optional().default(false),
+});
+
+export const updateAddressSchema = addressInputSchema.partial();
+
+export const addToCartSchema = z.object({
+  bookFormatId: z.string().uuid(),
+  quantity: z.coerce.number().int().min(1).max(99).default(1),
+});
+
+export const updateCartItemSchema = z.object({
+  quantity: z.coerce.number().int().min(0).max(99),
+});
+
+export const checkoutSchema = z.object({
+  addressId: z.string().uuid().optional().nullable(),
+  shippingMethod: z.enum(['standard', 'express']).optional().nullable(),
+});
+
+export const updateOrderStatusSchema = z.object({
+  status: z.enum([
+    'PROCESSING',
+    'SHIPPED',
+    'DELIVERED',
+    'CANCELLED',
+    'REFUNDED',
+  ]),
+  trackingNumber: z.string().max(120).optional().nullable(),
+});
+
+export const orderSearchSchema = z.object({
+  status: z
+    .enum([
+      'PENDING_PAYMENT',
+      'PAID',
+      'PROCESSING',
+      'SHIPPED',
+      'DELIVERED',
+      'CANCELLED',
+      'REFUNDED',
+    ])
+    .optional(),
+  q: z.string().optional(),
+  page: z.coerce.number().int().min(1).optional().default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).optional().default(20),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type BookSearchInput = z.infer<typeof bookSearchSchema>;
 export type CreateBookInput = z.infer<typeof createBookSchema>;
 export type UpdateBookInput = z.infer<typeof updateBookSchema>;
+export type AddressInput = z.infer<typeof addressInputSchema>;
+export type AddToCartInput = z.infer<typeof addToCartSchema>;
+export type UpdateCartItemInput = z.infer<typeof updateCartItemSchema>;
+export type CheckoutInput = z.infer<typeof checkoutSchema>;
+export type UpdateOrderStatusInput = z.infer<typeof updateOrderStatusSchema>;
+export type OrderSearchInput = z.infer<typeof orderSearchSchema>;

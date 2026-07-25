@@ -1,20 +1,29 @@
 import type {
+  AddressDto,
   AuthTokensDto,
   AuthorDto,
   BookDetailDto,
   BookListItemDto,
+  CartDto,
   CategoryDto,
+  CheckoutResponseDto,
   DashboardStatsDto,
+  OrderDto,
   PaginatedResponse,
   PublisherDto,
   UserDto,
 } from '@boks/shared-types';
 import type {
+  AddressInput,
+  AddToCartInput,
   BookSearchInput,
+  CheckoutInput,
   CreateBookInput,
   LoginInput,
+  OrderSearchInput,
   RegisterInput,
   UpdateBookInput,
+  UpdateOrderStatusInput,
 } from '@boks/validation';
 
 export type TokenGetter = () => string | null | Promise<string | null>;
@@ -115,6 +124,56 @@ export function createApiClient(options: ApiClientOptions) {
         request<BookDetailDto>(options, `/books/${encodeURIComponent(idOrSlug)}`),
     },
 
+    cart: {
+      get: () => request<CartDto>(options, '/cart'),
+      add: (body: AddToCartInput) =>
+        request<CartDto>(options, '/cart/items', {
+          method: 'POST',
+          body: JSON.stringify(body),
+        }),
+      updateItem: (itemId: string, quantity: number) =>
+        request<CartDto>(options, `/cart/items/${itemId}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ quantity }),
+        }),
+      removeItem: (itemId: string) =>
+        request<CartDto>(options, `/cart/items/${itemId}`, {
+          method: 'DELETE',
+        }),
+      clear: () => request<CartDto>(options, '/cart', { method: 'DELETE' }),
+    },
+
+    addresses: {
+      list: () => request<AddressDto[]>(options, '/addresses'),
+      create: (body: AddressInput) =>
+        request<AddressDto>(options, '/addresses', {
+          method: 'POST',
+          body: JSON.stringify(body),
+        }),
+      update: (id: string, body: Partial<AddressInput>) =>
+        request<AddressDto>(options, `/addresses/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(body),
+        }),
+      remove: (id: string) =>
+        request<void>(options, `/addresses/${id}`, { method: 'DELETE' }),
+    },
+
+    checkout: (body: CheckoutInput) =>
+      request<CheckoutResponseDto>(options, '/checkout', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      }),
+
+    orders: {
+      list: () => request<OrderDto[]>(options, '/orders'),
+      get: (id: string) => request<OrderDto>(options, `/orders/${id}`),
+      pay: (id: string) =>
+        request<OrderDto>(options, `/orders/${id}/pay`, { method: 'POST' }),
+      cancel: (id: string) =>
+        request<OrderDto>(options, `/orders/${id}/cancel`, { method: 'POST' }),
+    },
+
     authors: {
       list: () => request<AuthorDto[]>(options, '/authors'),
       get: (id: string) => request<AuthorDto>(options, `/authors/${id}`),
@@ -213,6 +272,19 @@ export function createApiClient(options: ApiClientOptions) {
         remove: (id: string) =>
           request<void>(options, `/admin/publishers/${id}`, {
             method: 'DELETE',
+          }),
+      },
+      orders: {
+        list: (params: Partial<OrderSearchInput> = {}) =>
+          request<PaginatedResponse<OrderDto>>(
+            options,
+            `/admin/orders${toQuery(params)}`,
+          ),
+        get: (id: string) => request<OrderDto>(options, `/admin/orders/${id}`),
+        updateStatus: (id: string, body: UpdateOrderStatusInput) =>
+          request<OrderDto>(options, `/admin/orders/${id}/status`, {
+            method: 'PATCH',
+            body: JSON.stringify(body),
           }),
       },
       uploadCover: async (file: Blob, filename: string) => {

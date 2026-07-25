@@ -2,8 +2,35 @@ import { createApiClient } from '@boks/api-client';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
-const API_URL =
-  process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3001';
+/**
+ * On Expo web opened via LAN (e.g. http://192.168.1.35:8081), rewrite
+ * localhost API URLs to the same hostname so the browser hits the host machine.
+ * Native / Expo Go still need EXPO_PUBLIC_API_URL=http://<lan-ip>:3001.
+ */
+function resolveApiUrl(): string {
+  const configured = (
+    process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3001'
+  ).replace(/\/$/, '');
+
+  if (Platform.OS === 'web' && typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host && host !== 'localhost' && host !== '127.0.0.1') {
+      try {
+        const url = new URL(configured);
+        if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+          url.hostname = host;
+          return url.toString().replace(/\/$/, '');
+        }
+      } catch {
+        return `http://${host}:3001`;
+      }
+    }
+  }
+
+  return configured;
+}
+
+const API_URL = resolveApiUrl();
 
 const memory = new Map<string, string>();
 
@@ -62,3 +89,5 @@ export const api = createApiClient({
   baseUrl: API_URL,
   getAccessToken,
 });
+
+export { API_URL };

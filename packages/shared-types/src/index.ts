@@ -1,4 +1,10 @@
-import type { BookFormatType, BookStatus, Role } from '@boks/configuration';
+import type {
+  BookFormatType,
+  BookStatus,
+  OrderStatus,
+  Role,
+  ShippingMethodId,
+} from '@boks/configuration';
 
 export interface UserDto {
   id: string;
@@ -84,6 +90,82 @@ export interface AuthTokensDto {
   accessToken: string;
   refreshToken: string;
   user: UserDto;
+}
+
+export interface AddressDto {
+  id: string;
+  fullName: string;
+  line1: string;
+  line2?: string | null;
+  city: string;
+  state?: string | null;
+  postalCode: string;
+  country: string;
+  phone?: string | null;
+  isDefault: boolean;
+}
+
+export interface CartItemDto {
+  id: string;
+  bookFormatId: string;
+  bookId: string;
+  title: string;
+  slug: string;
+  format: BookFormatType;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+  coverUrl?: string | null;
+  authorName?: string | null;
+}
+
+export interface CartDto {
+  id: string;
+  items: CartItemDto[];
+  subtotal: number;
+  itemCount: number;
+  hasPhysicalItems: boolean;
+}
+
+export interface OrderItemDto {
+  id: string;
+  bookId: string;
+  title: string;
+  slug: string;
+  format: BookFormatType;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+}
+
+export interface OrderDto {
+  id: string;
+  number: string;
+  status: OrderStatus;
+  subtotal: number;
+  shippingFee: number;
+  total: number;
+  currency: string;
+  shippingMethod?: ShippingMethodId | null;
+  address?: AddressDto | null;
+  paymentProvider?: string | null;
+  trackingNumber?: string | null;
+  items: OrderItemDto[];
+  paidAt?: string | null;
+  shippedAt?: string | null;
+  deliveredAt?: string | null;
+  cancelledAt?: string | null;
+  createdAt: string;
+  /** Present in admin listings */
+  customer?: { id: string; email: string; name: string } | null;
+}
+
+export interface CheckoutResponseDto {
+  order: OrderDto;
+  payment: {
+    provider: 'mock' | 'stripe';
+    clientSecret?: string | null;
+  };
 }
 
 export interface DashboardStatsDto {

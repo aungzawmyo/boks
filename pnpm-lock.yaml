@@ -23,6 +23,9 @@ importers:
       '@boks/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@boks/configuration':
+        specifier: workspace:*
+        version: link:../../packages/configuration
       '@boks/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -189,6 +192,9 @@ importers:
       slugify:
         specifier: ^1.6.6
         version: 1.6.9
+      stripe:
+        specifier: ^18.0.0
+        version: 18.5.0(@types/node@22.20.1)
       zod:
         specifier: ^3.24.2
         version: 3.25.76
@@ -232,12 +238,18 @@ importers:
       '@boks/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@boks/configuration':
+        specifier: workspace:*
+        version: link:../../packages/configuration
       '@boks/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
       '@boks/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
+      '@expo/vector-icons':
+        specifier: ^14.1.0
+        version: 14.1.0(expo-font@13.3.2(expo@53.0.27(@babel/core@7.29.7)(@expo/metro-runtime@5.0.4(react-native@0.79.2(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.2(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@react-native-async-storage/async-storage':
         specifier: 2.1.2
         version: 2.1.2(react-native@0.79.2(@babel/core@7.29.7)(@types/react@19.0.14)(react@19.0.0))
@@ -6088,6 +6100,15 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
+
+  stripe@18.5.0:
+    resolution: {integrity: sha512-Hp+wFiEQtCB0LlNgcFh5uVyKznpDjzyUZ+CNVEf+I3fhlYvh7rZruIg+jOwzJRCpy0ZTPMjlzm7J2/M2N6d+DA==}
+    engines: {node: '>=12.*'}
+    peerDependencies:
+      '@types/node': '>=12.x.x'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   strtok3@10.3.5:
     resolution: {integrity: sha512-ki4hZQfh5rX0QDLLkOCj+h+CVNkqmp/CMf8v8kZpkNVK6jGQooMytqzLZYUVYIZcFZ6yDB70EfD8POcFXiF5oA==}
@@ -13428,6 +13449,12 @@ snapshots:
   strip-json-comments@2.0.1: {}
 
   strip-json-comments@3.1.1: {}
+
+  stripe@18.5.0(@types/node@22.20.1):
+    dependencies:
+      qs: 6.15.3
+    optionalDependencies:
+      '@types/node': 22.20.1
 
   strtok3@10.3.5:
     dependencies:

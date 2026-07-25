@@ -110,23 +110,22 @@ export default function BookstoreDashboard() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
         <KpiCard
           label="Net Revenue"
-          value={`$${(stats?.netRevenue ?? 124560.8).toLocaleString()}`}
-          growth={stats?.revenueGrowth ?? 18.6}
+          value={`$${(stats?.netRevenue ?? 0).toLocaleString()}`}
+          growth={stats?.revenueGrowth ?? 0}
         />
         <KpiCard
           label="Orders"
-          value={`${stats?.orders ?? 1248}`}
-          growth={stats?.ordersGrowth ?? 14.3}
+          value={`${stats?.orders ?? 0}`}
+          growth={stats?.ordersGrowth ?? 0}
         />
         <KpiCard
           label="Ebooks Sold"
-          value={`${stats?.ebooksSold ?? 832}`}
-          growth={stats?.ebooksGrowth ?? 22.7}
+          value={`${stats?.ebooksSold ?? 0}`}
+          growth={stats?.ebooksGrowth ?? 0}
         />
         <KpiCard
           label="Low Stock"
-          value={`${stats?.lowStockCount ?? 23}`}
-          growth={-4.2}
+          value={`${stats?.lowStockCount ?? 0}`}
           warn
         />
       </div>
